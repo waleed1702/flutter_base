@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod_base/src/utils/config.dart';
 
-class BasePaths{
-
+class BasePaths {
   const BasePaths._();
 
   static const baseImagePath = "assets/images";

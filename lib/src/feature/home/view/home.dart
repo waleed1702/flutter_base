@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod_base/src/feature/product/view/products.dart';
 import 'package:flutter_riverpod_base/src/res/strings.dart';
+import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -13,7 +12,9 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text(AppStrings.appName),
       ),
-      body: const ProductsList(),
+      body: Column(
+        children: [Text('Welcome')],
+      ),
     );
   }
 }

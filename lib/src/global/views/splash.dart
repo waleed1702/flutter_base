@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
+import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
 import 'package:flutter_riverpod_base/src/global/controller/init_controller.dart';
 import 'package:flutter_riverpod_base/src/global/providers/common_providers.dart';
 import 'package:flutter_riverpod_base/src/utils/config.dart';
@@ -28,17 +29,16 @@ class _SplashViewState extends ConsumerState<SplashView> {
         context.go(HomeView.routePath);
       });
     } else {
-
-      ref.read(initControllerProvider).initUserAndToken().then((value){
+      ref.read(initControllerProvider).initUserAndToken().then((value) {
         final user = ref.read(currentUserProvider);
         final token = ref.read(authTokenProvider);
 
         /// Check if both the [user] and [token] have value
-        if(user == null || token == null){
+        if (user == null || token == null) {
           /// Route the user to Authenticaion screen
         } else {
           /// Route the user to Home screen
-          context.go(HomeView.routePath);
+          context.go(LoginView.routePath);
         }
       });
     }
@@ -52,7 +52,10 @@ class _SplashViewState extends ConsumerState<SplashView> {
         child: Text(
           "Splash",
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 24,
+          ),
         ),
       ),
     );
