@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
-import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
 import 'package:flutter_riverpod_base/src/global/controller/init_controller.dart';
 import 'package:flutter_riverpod_base/src/global/providers/common_providers.dart';
+import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
+import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
 import 'package:flutter_riverpod_base/src/utils/config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 
 class SplashView extends ConsumerStatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -21,23 +21,18 @@ class _SplashViewState extends ConsumerState<SplashView> {
   void initState() {
     super.initState();
 
-    /// check if the app is running in dev mode
     if (AppConfig.devMode) {
-      /// bypass authenticaion logic.
-      /// Navigate to Home
       Future.delayed(const Duration(seconds: 2)).then((value) {
-        context.go(HomeView.routePath);
+        context.go(LoginView.routePath);
       });
     } else {
       ref.read(initControllerProvider).initUserAndToken().then((value) {
         final user = ref.read(currentUserProvider);
         final token = ref.read(authTokenProvider);
 
-        /// Check if both the [user] and [token] have value
         if (user == null || token == null) {
-          /// Route the user to Authenticaion screen
+          context.go(HomeView.routePath);
         } else {
-          /// Route the user to Home screen
           context.go(LoginView.routePath);
         }
       });
@@ -47,13 +42,13 @@ class _SplashViewState extends ConsumerState<SplashView> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Color.fromARGB(255, 153, 165, 174),
       body: Center(
         child: Text(
           "Splash",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 24,
           ),
         ),

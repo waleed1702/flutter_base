@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod_base/src/feature/home/controller/login_controller.dart';
+import 'package:flutter_riverpod_base/src/feature/details/details_view.dart';
+import 'package:flutter_riverpod_base/src/feature/login/controller/login_controller.dart';
 import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
 import 'package:flutter_riverpod_base/src/global/views/splash.dart';
 import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
@@ -26,6 +27,12 @@ final GoRouter router = GoRouter(
         final provider = loginViewModelProvider;
 
         return LoginView(provider: provider);
+      },
+    ),
+    GoRoute(
+      path: DetailsView.routePath,
+      builder: (BuildContext context, GoRouterState state) {
+        return DetailsView();
       },
     ),
   ],

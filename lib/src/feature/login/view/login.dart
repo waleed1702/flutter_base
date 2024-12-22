@@ -1,5 +1,7 @@
-import 'package:flutter_riverpod_base/src/feature/home/controller/login_controller.dart';
+import 'package:flutter_riverpod_base/src/feature/login/controller/login_controller.dart';
+import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends ConsumerWidget {
@@ -54,7 +56,10 @@ class LoginView extends ConsumerWidget {
             else ...[
               ElevatedButton(
                 onPressed: () {
-                  loginViewModel.login(context);
+                  loginViewModel.login(
+                    context,
+                    () => context.go(HomeView.routePath),
+                  );
                 },
                 child: const Text('Login'),
               ),

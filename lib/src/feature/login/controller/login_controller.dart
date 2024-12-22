@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod_base/src/feature/home/repo/login_repo.dart';
+import 'package:flutter_riverpod_base/src/feature/login/repo/login_repo.dart';
 import 'package:flutter_riverpod_base/src/utils/snackbar_service.dart';
 import 'package:flutter_riverpod_base/src/models/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 final loginViewModelProvider =
     StateNotifierProvider<LoginViewModel, LoginState>((ref) {
   final repo =
-      ref.watch(authRepoProvider); // Replace with your AuthRepo provider
+      ref.watch(loginReoProvider); // Replace with your AuthRepo provider
   return LoginViewModel(repo: repo);
 });
 
@@ -20,12 +20,11 @@ class LoginViewModel extends StateNotifier<LoginState> {
       : _repo = repo,
         super(LoginState());
 
-  Future<void> login(BuildContext? context) async {
+  Future<void> login(BuildContext? context, Function navigate) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       state = state.copyWith(isLoading: true, errorMessage: null);
-
       final result = await _repo.login(
-        email: emailController.text,
+        username: emailController.text,
         password: passwordController.text,
       );
       if (result != null) {
@@ -43,10 +42,11 @@ class LoginViewModel extends StateNotifier<LoginState> {
             message: "Welcome, ${result.name}!",
           );
         }
+        navigate();
       } else {
         state = state.copyWith(
           isLoading: false,
-          errorMessage: 'Invalid',
+          errorMessage: 'Invalid User ',
           isLoggedIn: false,
           user: null,
         );
@@ -68,8 +68,7 @@ class LoginViewModel extends StateNotifier<LoginState> {
   }
 
   void logout(BuildContext? context) {
-    // Reset state
-    state = LoginState(); // Reset to the initial state
+    state = LoginState();
 
     if (context != null) {
       SnackBarService.showSnackBar(
