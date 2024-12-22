@@ -1,4 +1,5 @@
-import 'package:flutter_riverpod_base/src/feature/login/repo/login_repo.dart';
+import 'package:flutter_riverpod_base/src/feature/fireBase/auth_service.dart';
+import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
 import 'package:flutter_riverpod_base/src/utils/snackbar_service.dart';
 import 'package:flutter_riverpod_base/src/models/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,27 +7,24 @@ import 'package:flutter/widgets.dart';
 
 final loginViewModelProvider =
     StateNotifierProvider<LoginViewModel, LoginState>((ref) {
-  final repo =
-      ref.watch(loginReoProvider); // Replace with your AuthRepo provider
-  return LoginViewModel(repo: repo);
+  return LoginViewModel();
 });
 
 class LoginViewModel extends StateNotifier<LoginState> {
-  final AuthRepo _repo;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final auth = AuthService();
 
-  LoginViewModel({required AuthRepo repo})
-      : _repo = repo,
-        super(LoginState());
+  LoginViewModel() : super(LoginState());
 
   Future<void> login(BuildContext? context, Function navigate) async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       state = state.copyWith(isLoading: true, errorMessage: null);
-      final result = await _repo.login(
-        username: emailController.text,
+      final result = await auth.loginUserWithEmailAndPassword(
+        email: emailController.text,
         password: passwordController.text,
       );
+
       if (result != null) {
         passwordController.text = '';
         state = state.copyWith(
@@ -67,7 +65,56 @@ class LoginViewModel extends StateNotifier<LoginState> {
     }
   }
 
-  void logout(BuildContext? context) {
+  void signup(BuildContext? context, Function navigate) async {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      state = state.copyWith(isLoading: true, errorMessage: null);
+      final result = await auth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      if (result != null) {
+        passwordController.text = '';
+        state = state.copyWith(
+          isLoading: false,
+          isLoggedIn: true,
+          user: result,
+          errorMessage: null,
+        );
+
+        if (context != null && mounted == true) {
+          SnackBarService.showSnackBar(
+            context: context,
+            message: "Welcome, ${result.name}!",
+          );
+        }
+        navigate();
+      } else {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Invalid User ',
+          isLoggedIn: false,
+          user: null,
+        );
+
+        if (context != null) {
+          SnackBarService.showSnackBar(context: context, message: 'Fails');
+        }
+      }
+    } else {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: emailController.text.isEmpty == true
+            ? 'Email is not valid'
+            : 'Password is not valid',
+        isLoggedIn: false,
+        user: null,
+      );
+    }
+  }
+
+  void logout(context, Function navigate) {
+    auth.signout();
     state = LoginState();
 
     if (context != null) {
@@ -76,13 +123,14 @@ class LoginViewModel extends StateNotifier<LoginState> {
         message: "Logged out successfully.",
       );
     }
+    navigate();
   }
 }
 
 class LoginState {
   final bool isLoading;
   final bool isLoggedIn;
-  final User? user;
+  final UserAcc? user;
   final String? errorMessage;
 
   LoginState({
@@ -95,7 +143,7 @@ class LoginState {
   LoginState copyWith({
     bool? isLoading,
     bool? isLoggedIn,
-    User? user,
+    UserAcc? user,
     String? errorMessage,
   }) {
     return LoginState(

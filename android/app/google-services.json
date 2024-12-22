@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "465419572086",
+    "project_id": "flutter-riverpod-86e09",
+    "storage_bucket": "flutter-riverpod-86e09.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465419572086:android:cd83c9ee3c0918af486057",
+        "android_client_info": {
+          "package_name": "com.dartbucket.flutter_riverpod_base"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdAnFUgIyKIQwibO5eDHo_JxQu8O7DGao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

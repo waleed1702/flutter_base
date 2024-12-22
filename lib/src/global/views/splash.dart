@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod_base/src/global/controller/init_controller.dart';
 import 'package:flutter_riverpod_base/src/global/providers/common_providers.dart';
 import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
-import 'package:flutter_riverpod_base/src/feature/home/view/home.dart';
+import 'package:flutter_riverpod_base/src/feature/home/home.dart';
 import 'package:flutter_riverpod_base/src/utils/config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

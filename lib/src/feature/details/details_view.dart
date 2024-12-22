@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod_base/src/feature/home%20copy/view/home.dart';
 import 'package:flutter_riverpod_base/src/feature/login/controller/login_controller.dart';
+import 'package:flutter_riverpod_base/src/feature/home/home.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_base/src/feature/login/view/login.dart';
+import 'package:flutter_riverpod_base/src/widgets/button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 
 class DetailsView extends StatelessWidget {
   const DetailsView({super.key});
@@ -12,32 +14,47 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   final loginViewModel = ref.read(loginViewModelProvider);
 
                   return Column(
                     children: [
+                      const SizedBox(height: 50),
                       detais('Email', loginViewModel.user!.email),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       detais('Name', loginViewModel.user!.name),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       detais('ID', loginViewModel.user!.id),
-                      SizedBox(height: 10)
+                      const SizedBox(height: 10),
+                      CustomButton(
+                        label: 'Sign Out',
+                        onPressed: () {
+                          ref.read(loginViewModelProvider.notifier).logout(
+                                context,
+                                () => context.go(LoginView.routePath),
+                              );
+                        },
+                      ),
                     ],
                   );
                 },
-                child: const Text('data')),
-            ElevatedButton(
-              onPressed: () => context.go(HomeView.routePath),
-              child: const Text('Back'),
-            ),
-          ],
+                child: const Text('data'),
+              ),
+              const Spacer(),
+              CustomButton(
+                label: 'back',
+                onPressed: () => context.go(HomeView.routePath),
+              ),
+            ],
+          ),
         ),
       ),
     );

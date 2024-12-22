@@ -16,7 +16,7 @@ class AuthRepo {
   final NetworkRepo _api;
   AuthRepo({required NetworkRepo api}) : _api = api;
 
-  Future<User?> login({
+  Future<UserAcc?> login({
     required String username,
     required String password,
   }) async {
@@ -38,7 +38,7 @@ class AuthRepo {
       (Response response) {
         try {
           final data = jsonDecode(response.body);
-          final user = User(
+          final user = UserAcc(
             id: data['id'].toString(),
             name: data['firstName'] + ' ' + data['lastName'],
             email: data['email'] ?? 'unknown@example.com',

@@ -2,25 +2,25 @@ import 'dart:convert';
 
 /// Sample User class just to demonstrate Authentication.
 
-class User {
+class UserAcc {
   final String id;
   final String name;
   final String email;
   final String pass;
-  User({
+  UserAcc({
     required this.id,
     required this.name,
     required this.email,
     required this.pass,
   });
 
-  User copyWith({
+  UserAcc copyWith({
     String? id,
     String? name,
     String? email,
     String? pass,
   }) {
-    return User(
+    return UserAcc(
       id: id ?? this.id,
       pass: pass ?? this.pass,
       name: name ?? this.name,
@@ -36,8 +36,8 @@ class User {
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
+  factory UserAcc.fromMap(Map<String, dynamic> map) {
+    return UserAcc(
       id: map['id'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
@@ -47,14 +47,14 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserAcc.fromJson(String source) =>
+      UserAcc.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'User(id: $id, name: $name, email: $email)';
 
   @override
-  bool operator ==(covariant User other) {
+  bool operator ==(covariant UserAcc other) {
     if (identical(this, other)) return true;
 
     return other.id == id && other.name == name && other.email == email;
